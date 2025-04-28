@@ -4,7 +4,7 @@
 class Sshkeymanager < Formula
   desc "Manages SSH keys, agent, and loads keys for shell sessions"
   homepage "https://github.com/ggthedev/SSHKEYSMANAGER"
-  url "https://github.com/ggthedev/SSHKEYSMANAGER/archive/refs/tags/v0.0.1.tar.gz"
+  url "https://github.com/ggthedev/SSHKEYSMANAGER/archive/refs/tags/0.0.1.tar.gz"
   sha256 "e5f9192a754c96f4b4192ccca0b156d3e9770664"
   version "0.0.1"
 

@@ -34,6 +34,11 @@ class Sshkeymanager < Formula
       exec "#{libexec}/sshagentsetup.sh" "$@"
     EOS
 
+    # Create a symlink to the actual script for sourcing
+    # This allows users to source the script directly
+    (share/"sshkeymanager").mkpath
+    ln_sf "#{libexec}/sshagentsetup.sh", "#{share}/sshkeymanager/sshagentsetup.sh"
+
     # Keep gnu-getopt replacement logic if needed
     if OS.mac? && build.with?("gnu-getopt")
       inreplace libexec/"sshkeymanager.sh" do |s|
@@ -55,6 +60,12 @@ class Sshkeymanager < Formula
         `brew install bash`
       Then ensure the `bash` command in your PATH points to the newer version,
       or explicitly run the script with the Homebrew Bash path.
+
+      To use the SSH agent setup script:
+        - To execute it: `sshagentsetup`
+        - To source it (recommended for shell integration): 
+          Add to your ~/.zshrc or ~/.bashrc:
+          `source "$(brew --prefix)/share/sshkeymanager/sshagentsetup.sh"`
 
       Configuration and logs are typically stored in:
         ~/.config/sshkeymanager/

@@ -4,8 +4,8 @@
 class Sshkeymanager < Formula
   desc "SSH key management tool with a menu driven interface as well as a CLI interface"
   homepage "https://github.com/ggthedev/SSHKEYSMANAGER"
-  url "https://github.com/ggthedev/SSHKEYSMANAGER/archive/refs/tags/v0.0.1.3.tar.gz"
-  sha256 "d6c730c129a6b0b86152e002a449c077c7977aaacbc65b06bc4049826dbc53c5"
+  url "https://github.com/ggthedev/SSHKEYSMANAGER/archive/refs/tags/v0.0.1.4.tar.gz"
+  sha256 "309543ad2365ea23ef0977d2208eee4403ccc25486cf8e5b693430188f4530d4"
   license "BSD-3-Clause"
   head "https://github.com/ggthedev/SSHKEYSMANAGER.git", branch: "main"
 
@@ -14,16 +14,24 @@ class Sshkeymanager < Formula
   # Make gnu-getopt optional on macOS
   depends_on "gnu-getopt" => :optional if OS.mac?
 
-  def install
+ def install
     # Install library and main script into libexec
     libexec.install "lib"
     libexec.install "sshkeymanager.sh"
+    libexec.install "sshagentsetup.sh"
 
     # Create a wrapper script using /usr/bin/env bash
     (bin/"sshkeymanager").write <<~EOS
       #!/usr/bin/env bash
       # Execute the main script from libexec, relying on PATH for bash
       exec "#{libexec}/sshkeymanager.sh" "$@"
+    EOS
+
+    # Create a wrapper script for sshagentsetup
+    (bin/"sshagentsetup").write <<~EOS
+      #!/usr/bin/env bash
+      # Execute the sshagentsetup script from libexec
+      exec "#{libexec}/sshagentsetup.sh" "$@"
     EOS
 
     # Keep gnu-getopt replacement logic if needed
@@ -34,7 +42,7 @@ class Sshkeymanager < Formula
       end
     end
   end
-
+  
   def caveats
     s = <<~EOS
       The main utility `sshkeymanager` has been installed.
